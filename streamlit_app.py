@@ -6,8 +6,11 @@ medikamente = pd.DataFrame({
     "Medikament": ["Propofol", "Ketamin"],
     "Dosis_mg_pro_kg": [2.0, 1.5],
     "Maximale_Dosis_mg": [200, 150],
-    "Perfusor_Dosierung_mg_kg_h": [6.0, 0.5],  # Ziel-Dosierung
+    "Perfusor_Dosierung_mg_kg_h": [6.0, 0.5],  # Ziel-Dosierung in mg/kg/h
 })
+
+# Fixes Spritzenvolumen für Perfusoren
+spritzenvolumen = 50  # ml
 
 # Streamlit Setup
 st.title("💉 Anästhesie-Rechner")
@@ -15,31 +18,29 @@ st.title("💉 Anästhesie-Rechner")
 gewicht = st.number_input("Körpergewicht (kg)", min_value=1.0, max_value=300.0, step=0.1)
 
 if gewicht:
-    spritzenvolumen = st.selectbox("Spritzenvolumen (ml)", [20, 30, 50], index=2)
+    st.markdown(f"**Spritzenvolumen (fixiert):** {spritzenvolumen} ml")
 
     for idx, row in medikamente.iterrows():
         with st.expander(f"🧪 {row['Medikament']}"):
-            st.markdown(f"""
-            **Ziel-Perfusordosis:** {row['Perfusor_Dosierung_mg_h_kg']} mg/kg/h  
-            📝 *{row['Zusatzinfo']}*
-            """)
+            ziel_dosierung = row["Perfusor_Dosierung_mg_kg_h"]  # mg/kg/h
+            ziel_dosis_mg_h = ziel_dosierung * gewicht          # mg/h
 
-            # Eingabe: Wirkstoffmenge in der Spritze (mg)
-            wirkstoff_mg = st.slider(
+            # Eingabe: Wirkstoffmenge in der Spritze (mg) → z. B. 500 mg in 50 ml
+            wirkstoff_mg = st.number_input(
                 f"💊 Wirkstoffmenge in {spritzenvolumen} ml (mg)",
-                min_value=0.0,
-                max_value=1500.0,
+                min_value=1.0,
+                max_value=2000.0,
                 value=500.0,
                 step=10.0,
-                key=f"spritze_{idx}"
+                key=f"wirkstoff_{idx}"
             )
 
             konzentration = wirkstoff_mg / spritzenvolumen  # mg/ml
-            ziel_dosis_mg_h = row["Perfusor_Dosierung_mg_kg_h"] * gewicht
             laufrate_ml_h = ziel_dosis_mg_h / konzentration if konzentration > 0 else 0
 
-            st.success(f"""
-            🔸 Konzentration: {konzentration:.2f} mg/ml  
-            🕒 Ziel-Dosierung: {ziel_dosis_mg_h:.2f} mg/h  
-            💧 → Laufgeschwindigkeit: **{laufrate_ml_h:.2f} ml/h**
+            st.markdown(f"""
+            **Ziel-Dosierung:** {ziel_dosierung:.2f} mg/kg/h  
+            🧠 Für {gewicht:.1f} kg: {ziel_dosis_mg_h:.2f} mg/h  
+            💉 Konzentration: {konzentration:.2f} mg/ml  
+            💧 **Laufgeschwindigkeit:** {laufrate_ml_h:.2f} ml/h
             """)
