@@ -4,6 +4,7 @@ import pandas as pd
 # Medikamentendaten
 medikamente = pd.DataFrame({
     "Medikament": ["Propofol", "Ketamin"],
+    "Dosis_Bolus_mg_pro_kg_Bolus": [2.0, 1.5],
     "Dosis_mg_pro_kg": [2.0, 1.5],
     "Maximale_Dosis_mg": [200, 150],
     "Default_Dosierung_mg_kg_h": [6.0, 0.5],  # Vorschlagswert für Schieberegler
@@ -15,7 +16,7 @@ spritzenvolumen = 50  # ml
 # Streamlit Setup
 st.title("💉 Anästhesie-Rechner")
 
-gewicht = st.number_input("Körpergewicht (kg)", min_value=1.0, max_value=300.0, step=0.1)
+gewicht = st.number_input("Körpergewicht (kg)", min_value=1.0, max_value=300.0, step=1.0)
 
 if gewicht:
     st.markdown(f"**Spritzenvolumen (fixiert):** {spritzenvolumen} ml")
@@ -44,10 +45,13 @@ if gewicht:
                 key=f"wirkstoff_{idx}"
             )
 
+            
+            Bolusdosis = Dosis_Bolus_mg_pro_kg_Bolus * gewicht
             konzentration = wirkstoff_mg / spritzenvolumen  # mg/ml
             laufrate_ml_h = ziel_dosis_mg_h / konzentration if konzentration > 0 else 0
 
             st.success(f"""
+            🔸 **Bolusdosis:** {dosierung_mg_kg_h:.2f} mg/kg/h  
             🔸 **Zieldosierung:** {dosierung_mg_kg_h:.2f} mg/kg/h  
             🔸 **Gesamtdosis:** {ziel_dosis_mg_h:.2f} mg/h  
             🔸 **Konzentration:** {konzentration:.2f} mg/ml  
