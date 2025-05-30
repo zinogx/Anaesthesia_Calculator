@@ -45,13 +45,13 @@ if gewicht:
                 key=f"wirkstoff_{idx}"
             )
 
-            
-            Bolusdosis = Dosis_Bolus_mg_pro_kg_Bolus * gewicht
+            # Korrektur: Zugriff auf Zeilenwert
+            bolusdosis = row["Dosis_Bolus_mg_pro_kg_Bolus"] * gewicht
             konzentration = wirkstoff_mg / spritzenvolumen  # mg/ml
             laufrate_ml_h = ziel_dosis_mg_h / konzentration if konzentration > 0 else 0
 
             st.success(f"""
-            🔸 **Bolusdosis:** {Dosis_Bolus_mg_pro_kg_Bolus:.2f} mg/kg/h  
+            🔸 **Bolusdosis:** {bolusdosis:.2f} mg  
             🔸 **Zieldosierung:** {dosierung_mg_kg_h:.2f} mg/kg/h  
             🔸 **Gesamtdosis:** {ziel_dosis_mg_h:.2f} mg/h  
             🔸 **Konzentration:** {konzentration:.2f} mg/ml  
