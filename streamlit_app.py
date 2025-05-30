@@ -8,8 +8,8 @@ medikamente = pd.DataFrame({
     "Min_Dosis_Bolus_mg_pro_kg_Bolus": [1.5, 0.25],
     "Max_Dosis_Bolus_mg_pro_kg_Bolus": [3, 0.25],
     "Default_Dosierung_mg_kg_h": [4.0, 0.5],
-    "Min_Dosierung_mg_kg_h": [4.0, ],
-    "Max_Dosierung_mg_kg_h": [12.0, ],
+    "Min_Dosierung_mg_kg_h": [4.0],
+    "Max_Dosierung_mg_kg_h": [12.0],
 })
 
 spritzenvolumen = 50  # ml
