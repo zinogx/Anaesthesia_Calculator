@@ -51,7 +51,7 @@ if gewicht:
             laufrate_ml_h = ziel_dosis_mg_h / konzentration if konzentration > 0 else 0
 
             st.success(f"""
-            🔸 **Bolusdosis:** {dosierung_mg_kg_h:.2f} mg/kg/h  
+            🔸 **Bolusdosis:** {Dosis_Bolus_mg_pro_kg_Bolus:.2f} mg/kg/h  
             🔸 **Zieldosierung:** {dosierung_mg_kg_h:.2f} mg/kg/h  
             🔸 **Gesamtdosis:** {ziel_dosis_mg_h:.2f} mg/h  
             🔸 **Konzentration:** {konzentration:.2f} mg/ml  
