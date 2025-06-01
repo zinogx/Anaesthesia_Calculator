@@ -11,7 +11,7 @@ medikamente_erwachsene = pd.DataFrame({
     "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min", "µg/kg/min"]
 })
 
-# Medikamentendaten für Kinder – du kannst diese Werte anpassen
+# Medikamentendaten für Kinder (Platzhalter)
 medikamente_kinder = pd.DataFrame({
     "Medikament": ["Propofol", "Ketamin", "Remifentanil"],
     "Gruppe": ["Hypnotika", "Hypnotika", "Opioide"],
@@ -28,24 +28,23 @@ spritzenvolumen = 50  # ml
 st.set_page_config(page_title="Anästhesie-Rechner", layout="wide")
 st.title("💉 Anästhesie-Rechner")
 
-# Tabs: Erwachsene / Kinder
+# Tabs für Erwachsene und Kinder
 tabs = st.tabs(["👤 Erwachsene", "🧒 Kinder"])
 tab_daten = [medikamente_erwachsene, medikamente_kinder]
 tab_labels = ["Erwachsene", "Kinder"]
 
 for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
-    with tab:
-        st.header(f"Berechnung für {label}")
-        gewicht = st.number_input(f"Körpergewicht ({label}) in kg", min_value=1.0, max_value=300.0, step=1.0, key=f"gewicht_{label}")
+with tab:
+st.header(f"Berechnung für {label}")
+gewicht = st.number_input(f"Körpergewicht ({label}) in kg", min_value=1.0, max_value=300.0, step=1.0, key=f"gewicht_{label}")
 
-        if gewicht:
-            st.markdown(f"**Fixiertes Spritzenvolumen (Perfusor):** {spritzenvolumen} ml")
-            gruppen = medikamente["Gruppe"].unique()
+    if gewicht:
+        st.markdown(f"**Fixiertes Spritzenvolumen (Perfusor):** {spritzenvolumen} ml")
 
-            for gruppe in gruppen:
-                st.subheader(f"🧪 {gruppe}")
+        gruppen = medikamente["Gruppe"].unique()
+        for gruppe in gruppen:
+            with st.expander(f"🧪 {gruppe}", expanded=True):
                 df_gruppe = medikamente[medikamente["Gruppe"] == gruppe]
-
                 for idx, row in df_gruppe.iterrows():
                     st.markdown(f"### 💊 {row['Medikament']}")
                     col1, col2 = st.columns(2)
