@@ -76,8 +76,7 @@ bolus_volumen_ml = bolusdosis_mg / konzentration_bolus if konzentration_bolus > 
 
                         col1, col2 = st.columns(2)
 
-                        with col1:
-                            with col1:
+                        with col1:                            
                             st.markdown("### 💥 Bolus")
                             st.metric("Bolusdosis (mg/kg)", f"{row['Dosis_Bolus_mg_pro_kg_Bolus']:.2f}")
                             st.metric("Bolusdosis gesamt (mg)", f"{bolusdosis_mg:.2f}")
