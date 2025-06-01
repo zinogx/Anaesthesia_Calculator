@@ -66,6 +66,7 @@ for tab, daten, label in zip(tabs, [medikamente_kinder, medikamente_erwachsene],
 
                         with col1:
                             st.markdown("### 💥 Bolus")
+                            st.metric("Konzentration in Bolus-Spritze (mg/ml)", f"{konzentration:.2f}")
                             st.metric("Bolusdosis (mg/kg)", f"{row['Dosis_Bolus_mg_pro_kg_Bolus']:.2f}")
                             st.metric("Bolusdosis gesamt (mg)", f"{bolusdosis_mg:.2f}")
                             st.metric("Volumen für Bolusgabe (ml)", f"{bolus_volumen_ml:.2f}")
