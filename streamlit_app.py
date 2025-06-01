@@ -13,13 +13,20 @@ medikamente_erwachsene = pd.DataFrame({
 
 # Medikamentendaten für Kinder (Platzhalter)
 medikamente_kinder = pd.DataFrame({
-    "Medikament": ["Propofol", "Ketamin", "Remifentanil"],
-    "Gruppe": ["Hypnotika", "Hypnotika", "Opioide"],
-    "Dosis_Bolus_mg_pro_kg_Bolus": [3.0, 2.0, 1.0],
-    "Maximale_Dosis_mg": [150, 100, 10],
-    "Default_Dosierung_mg_kg_h": [10.0, 1.0, 0.12],
-    "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min"]
+    "Medikament": ["Midazolam", "Clonidin", "Lorazepam", "Esketamin", "Methohexital", "Diazepam", "Chloralhydrat", "Promethazin", "Levomepromazin", 
+                   "Thiopental", "Propofol", "Etomidate", "Mivacurium", "Rocuronium", "Succinylcholin", "Fentanyl", "Sufentanil", "Remifentanil"],
+    "Gruppe": ["Sedativa", "Sedativa", "Sedativa", "Sedativa", "Sedativa", "Sedativa", "Sedativa", "Sedativa", "Sedativa", 
+               "Hypnotika", "Hypnotika", "Hypnotika", "Relaxantien", "Relaxantien", "Relaxantien", "Opioide", "Opioide", "Opioide"],
+    "Dosis_Bolus_mg_pro_kg_Bolus": [0.5, 0.004, 0.1, 4.0, 30.0, 0.5, 50.0, 1.0, 1.0, 
+                                    7.0, 6.0, 0.3, 0.2, 0.9, 2.0, 5.0, 1.0, 2.0],
+    "Maximale_Dosis_mg": [15, None, 2.5, None, None, None, None, None, None,
+                          None, None, None, None, None, None, None, None, None],
+    "Default_Dosierung_mg_kg_h": [None, None, None, None, None, None, None, None, None,
+                                  None, 8.0, None, None, None, None, None, 1.0, 0.12],
+    "Einheit": ["mg/kg", "µg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", 
+                "mg/kg", "mg/kg/h", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "µg/kg", "µg/kg/h", "µg/kg/min"]
 })
+
 
 # Fixes Perfusor-Spritzenvolumen
 spritzenvolumen = 50  # ml
