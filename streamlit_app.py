@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # CSV-Datei laden 
-df = pd.read_csv("medikamente.csv")
+df_medikamente = pd.read_csv("medikamente.csv")
 
 # Fixes Perfusor-Spritzenvolumen
 spritzenvolumen = 50  # ml
