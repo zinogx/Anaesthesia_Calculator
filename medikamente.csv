@@ -1,9 +1,9 @@
 ﻿Medikament;Gruppe;Dosis_Bolus_mg_pro_kg_Bolus;Maximale_Dosis_mg;Default_Dosierung_mg_kg_h;Einheit;Altersgruppe
-Propofol;Hypnotika;2.0;200,00;6.0;mg/kg/h;Erwachsene
-Ketamin;Hypnotika;1.0;150,00;0.5;mg/kg/h;Erwachsene
-Remifentanil;Opioide;1.0;15,00;0.12;µg/kg/min;Erwachsene
-Sufentanil;Opioide;0.5;10,00;0.06;µg/kg/min;Erwachsene
-Propofol;Hypnotika;3.0;150,00;10.0;mg/kg/h;Kinder
-Ketamin;Hypnotika;2.0;100,00;1.0;mg/kg/h;Kinder
-Remifentanil;Opioide;1.0;10,00;0.12;µg/kg/min;Kinder
+Propofol;Hypnotika;2.0;200;6.0;mg/kg/h;Erwachsene
+Ketamin;Hypnotika;1.0;150;0.5;mg/kg/h;Erwachsene
+Remifentanil;Opioide;1.0;15;0.12;µg/kg/min;Erwachsene
+Sufentanil;Opioide;0.5;10;0.06;µg/kg/min;Erwachsene
+Propofol;Hypnotika;3.0;150;10.0;mg/kg/h;Kinder
+Ketamin;Hypnotika;2.0;100;1.0;mg/kg/h;Kinder
+Remifentanil;Opioide;1.0;10;0.12;µg/kg/min;Kinder
 ;;;;;;
