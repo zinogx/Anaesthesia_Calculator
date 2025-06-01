@@ -56,23 +56,22 @@ for tab, daten, label in zip(tabs, [medikamente_kinder, medikamente_erwachsene],
                             step=10.0,
                             key=f"{label}_wirkstoff_{row['Medikament']}"
                         )
-
                         # Perfusor-Konzentration (Wirkstoff in Standardspritze)
                         konzentration_perfusor = wirkstoff_mg / spritzenvolumen  # mg/ml
                         laufrate_ml_h = ziel_dosis_mg_h / konzentration_perfusor if konzentration_perfusor > 0 else 0
-
-                            # Optional: individuelle Konzentration für Bolusspritze
+                        
+                        # Optional: individuelle Konzentration für Bolusspritze
                         konzentration_bolus = st.number_input(
-                        f"🧪 Konzentration der Bolus-Spritze für {row['Medikament']} (mg/ml)",
-                        min_value=0.1,
-                        max_value=100.0,
-                        value=konzentration_perfusor,
-                        step=0.1,
-                        key=f"{label}_konz_bolus_{row['Medikament']}"
-)
-
-bolusdosis_mg = row["Dosis_Bolus_mg_pro_kg_Bolus"] * gewicht
-bolus_volumen_ml = bolusdosis_mg / konzentration_bolus if konzentration_bolus > 0 else 0
+                            f"🧪 Konzentration der Bolus-Spritze für {row['Medikament']} (mg/ml)",
+                            min_value=0.1,
+                            max_value=100.0,
+                            value=konzentration_perfusor,
+                            step=0.1,
+                            key=f"{label}_konz_bolus_{row['Medikament']}"
+                        )
+                        
+                        bolusdosis_mg = row["Dosis_Bolus_mg_pro_kg_Bolus"] * gewicht
+                        bolus_volumen_ml = bolusdosis_mg / konzentration_bolus if konzentration_bolus > 0 else 0
 
                         col1, col2 = st.columns(2)
 
