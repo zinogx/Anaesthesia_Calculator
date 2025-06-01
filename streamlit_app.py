@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # CSV-Datei laden 
-df_medikamente = pd.read_csv("medikamente.csv")
+df = pd.read_csv("medikamente.csv")
 
 # Fixes Perfusor-Spritzenvolumen
 spritzenvolumen = 50  # ml
@@ -23,7 +23,7 @@ for tab, altersgruppe in zip(tabs, altersgruppen):
             st.markdown(f"**Fixiertes Spritzenvolumen (Perfusor):** {spritzenvolumen} ml")
 
             # Filter für die jeweilige Altersgruppe
-            medikamente = df_medikamente[df_medikamente["Altersgruppe"] == altersgruppe]
+           medikamente = df[df["Altersgruppe"] == altersgruppe]
 
             gruppen = medikamente["Gruppe"].unique()
             for gruppe in gruppen:
