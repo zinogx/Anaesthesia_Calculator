@@ -87,4 +87,3 @@ for tab, daten, label in zip(tabs, [medikamente_kinder, medikamente_erwachsene],
                             st.metric("Zieldosierung (mg/kg/h)", f"{dosierung_mg_kg_h:.2f}")
                             st.metric("Gesamtdosis (mg/h)", f"{ziel_dosis_mg_h:.2f}")
                             st.metric("Laufrate (ml/h)", f"{laufrate_ml_h:.2f}")
-                            st.metric("Konzentration (mg/ml)", f"{konzentration:.2f}")
