@@ -11,8 +11,8 @@ medikamente_erwachsene = pd.DataFrame({
 
 # Beispielhafte Medikamentendaten für Kinder (andere Bolusdosen!)
 medikamente_kinder = pd.DataFrame({
-    "Medikament": ["Propofol", "Thiopental,"Ketamin", "Sufentanil", "Remifentanil", "Rocuronium", "Cisatracurium"],
-    "Gruppe": ["Hypnotika", "Hypnotika","Hypnotika", "Opioide", "Opioide", "Muskelrelaxantien", "Muskelrelaxantien"],
+    "Medikament": ["Propofol", "Thiopental, "Ketamin", "Sufentanil", "Remifentanil", "Rocuronium", "Cisatracurium"],
+    "Gruppe": ["Hypnotika", "Hypnotika", "Hypnotika", "Opioide", "Opioide", "Muskelrelaxantien", "Muskelrelaxantien"],
     "Dosis_Bolus_mg_pro_kg_Bolus": [3.0, 36.0, 2.0, 0.3, 0.5, 0.3, 0.1],
     "Default_Dosierung_mg_kg_h": [8.0, 0.0,  1.0, 0.1, 0.2, 0.0, 0.0],
 })
