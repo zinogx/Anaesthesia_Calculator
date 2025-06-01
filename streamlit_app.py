@@ -1,29 +1,45 @@
 import streamlit as st
 import pandas as pd
 
-# CSV-Datei laden 
-df = pd.read_csv("medikamente.csv")
+# Medikamentendaten für Erwachsene
+medikamente_erwachsene = pd.DataFrame({
+    "Medikament": ["Propofol", "Ketamin", "Remifentanil", "Sufentanil"],
+    "Gruppe": ["Hypnotika", "Hypnotika", "Opioide", "Opioide"],
+    "Dosis_Bolus_mg_pro_kg_Bolus": [2.0, 1.5, 1.0, 0.5],
+    "Maximale_Dosis_mg": [200, 150, 15, 10],
+    "Default_Dosierung_mg_kg_h": [6.0, 0.5, 0.12, 0.06],
+    "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min", "µg/kg/min"]
+})
+
+# Medikamentendaten für Kinder (Platzhalter)
+medikamente_kinder = pd.DataFrame({
+    "Medikament": ["Propofol", "Ketamin", "Remifentanil"],
+    "Gruppe": ["Hypnotika", "Hypnotika", "Opioide"],
+    "Dosis_Bolus_mg_pro_kg_Bolus": [3.0, 2.0, 1.0],
+    "Maximale_Dosis_mg": [150, 100, 10],
+    "Default_Dosierung_mg_kg_h": [10.0, 1.0, 0.12],
+    "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min"]
+})
 
 # Fixes Perfusor-Spritzenvolumen
 spritzenvolumen = 50  # ml
 
+# Streamlit Setup
 st.set_page_config(page_title="Anästhesie-Rechner", layout="wide")
 st.title("💉 Anästhesie-Rechner")
 
 # Tabs für Erwachsene und Kinder
 tabs = st.tabs(["👤 Erwachsene", "🧒 Kinder"])
-altersgruppen = ["Erwachsene", "Kinder"]
+tab_daten = [medikamente_erwachsene, medikamente_kinder]
+tab_labels = ["Erwachsene", "Kinder"]
 
-for tab, altersgruppe in zip(tabs, altersgruppen):
+for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
     with tab:
-        st.header(f"Berechnung für {altersgruppe}")
-        gewicht = st.number_input(f"Körpergewicht ({altersgruppe}) in kg", min_value=1.0, max_value=300.0, step=1.0, key=f"gewicht_{altersgruppe}")
+        st.header(f"Berechnung für {label}")
+        gewicht = st.number_input(f"Körpergewicht ({label}) in kg", min_value=1.0, max_value=300.0, step=1.0, key=f"gewicht_{label}")
 
         if gewicht:
             st.markdown(f"**Fixiertes Spritzenvolumen (Perfusor):** {spritzenvolumen} ml")
-
-            # Filter für die jeweilige Altersgruppe
-           medikamente = df[df["Altersgruppe"] == altersgruppe]
 
             gruppen = medikamente["Gruppe"].unique()
             for gruppe in gruppen:
@@ -34,8 +50,9 @@ for tab, altersgruppe in zip(tabs, altersgruppen):
                         col1, col2 = st.columns(2)
 
                         einheit = row.get("Einheit", "mg/kg/h")
-                        unique_key = f"{altersgruppe}_{row['Medikament']}_{idx}"
+                        unique_key = f"{label}_{row['Medikament']}_{idx}"
 
+                        # Ziel-Dosierung (mg/kg/h oder µg/kg/min)
                         if einheit == "µg/kg/min":
                             dosierung_ug_kg_min = st.slider(
                                 f"Ziel-Dosierung (µg/kg/min)",
@@ -58,6 +75,7 @@ for tab, altersgruppe in zip(tabs, altersgruppen):
                             )
                             ziel_dosis_mg_h = dosierung_mg_kg_h * gewicht
 
+                        # Wirkstoffmenge im Perfusor
                         wirkstoff_mg_perfusor = st.number_input(
                             f"Wirkstoffmenge in Perfusor (mg / {spritzenvolumen} ml)",
                             min_value=1.0,
@@ -69,6 +87,7 @@ for tab, altersgruppe in zip(tabs, altersgruppen):
                         konzentration_perfusor = wirkstoff_mg_perfusor / spritzenvolumen
                         laufrate_ml_h = ziel_dosis_mg_h / konzentration_perfusor if konzentration_perfusor > 0 else 0
 
+                        # Konzentration der Bolusspritze
                         konzentration_bolus = st.number_input(
                             f"Konzentration der Bolus-Spritze (mg/ml)",
                             min_value=0.1,
