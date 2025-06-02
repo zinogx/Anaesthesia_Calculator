@@ -8,7 +8,8 @@ medikamente_erwachsene = pd.DataFrame({
     "Dosis_Bolus_mg_pro_kg_Bolus": [2.0, 1.5, 1.0, 0.5],
     "Maximale_Dosis_mg": [200, 150, 15, 10],
     "Default_Dosierung_mg_kg_h": [6.0, 0.5, 0.12, 0.06],
-    "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min", "µg/kg/min"]
+    "Einheit": ["mg/kg/h", "mg/kg/h", "µg/kg/min", "µg/kg/min"],
+    "Dosierung_von_bis": [(3.0, 10.0), (0.25, 1.0), (0.05, 0.3), (0.02, 0.1)]
 })
 
 # Medikamentendaten für Kinder
@@ -20,7 +21,8 @@ medikamente_kinder = pd.DataFrame({
     "Maximale_Dosis_mg": [15, None, 2.5, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
     "Default_Dosierung_mg_kg_h": [None]*10 + [8.0, None, None, None, None, None, 1.0, 0.12],
     "Einheit": ["mg/kg", "µg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "mg/kg", 
-                "mg/kg", "mg/kg/h", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "µg/kg", "µg/kg/h", "µg/kg/min"]
+                "mg/kg", "mg/kg/h", "mg/kg", "mg/kg", "mg/kg", "mg/kg", "µg/kg", "µg/kg/h", "µg/kg/min"],
+    "Dosierung_von_bis": [None]*10 + [(5.0, 15.0), None, None, None, None, None, (0.5, 2.0), (0.05, 0.3)]
 })
 
 spritzenvolumen = 50  # ml
@@ -47,7 +49,9 @@ for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
                     for idx, row in df_gruppe.iterrows():
                         unique_key = f"{label}_{row['Medikament']}_{idx}"
 
-                        einheit = row.get("Einheit", "mg/kg/h")
+                        einheit = str(row.get("Einheit", "mg/kg/h"))
+                        dos_von_bis = row.get("Dosierung_von_bis", (0.0, 20.0))
+                        von, bis = dos_von_bis if isinstance(dos_von_bis, tuple) else (0.0, 20.0)
 
                         st.subheader(f"{row['Medikament']} ({einheit})")
 
@@ -56,17 +60,17 @@ for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
                         dosierung_ug_kg_min = None
 
                         if pd.notna(row["Default_Dosierung_mg_kg_h"]):
-                            if einheit == "µg/kg/min":
+                            if "µg/kg/min" in einheit:
                                 default_ug_kg_min = row["Default_Dosierung_mg_kg_h"] * 1000 / 60
                                 dosierung_ug_kg_min = st.slider(
-                                    "Ziel-Dosierung (µg/kg/min)", 0.0, 5.0, default_ug_kg_min, 0.01, key=f"{unique_key}_slider"
+                                    "Ziel-Dosierung (µg/kg/min)", float(von), float(bis), float(default_ug_kg_min), 0.01, key=f"{unique_key}_slider"
                                 )
                                 ziel_dosis_mg_h = dosierung_ug_kg_min * gewicht / 1000 * 60
                                 dosierung_mg_kg_h = ziel_dosis_mg_h / gewicht
-                            elif einheit == "mg/kg/h":
+                            elif "mg/kg/h" in einheit:
                                 default_mg_kg_h = row["Default_Dosierung_mg_kg_h"]
                                 dosierung_mg_kg_h = st.slider(
-                                    "Ziel-Dosierung (mg/kg/h)", 0.0, 20.0, default_mg_kg_h, 0.1, key=f"{unique_key}_slider"
+                                    "Ziel-Dosierung (mg/kg/h)", float(von), float(bis), float(default_mg_kg_h), 0.1, key=f"{unique_key}_slider"
                                 )
                                 ziel_dosis_mg_h = dosierung_mg_kg_h * gewicht
 
@@ -101,7 +105,7 @@ for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
                                     "Zieldosierung", "Gesamtdosis (mg/h)", "Konzentration Perfusor (mg/ml)", "Laufrate (ml/h)"
                                 ],
                                 "Wert": [
-                                    f"{dosierung_ug_kg_min:.2f} µg/kg/min" if einheit == "µg/kg/min" else f"{dosierung_mg_kg_h:.2f} mg/kg/h",
+                                    f"{dosierung_ug_kg_min:.2f} µg/kg/min" if "µg/kg/min" in einheit else f"{dosierung_mg_kg_h:.2f} mg/kg/h",
                                     f"{ziel_dosis_mg_h:.2f}",
                                     f"{konzentration_perfusor:.2f}",
                                     f"{laufrate_ml_h:.2f}"
