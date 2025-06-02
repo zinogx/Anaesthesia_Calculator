@@ -70,27 +70,31 @@ for tab, medikamente, label in zip(tabs, tab_daten, tab_labels):
                                 )
                                 ziel_dosis_mg_h = dosierung_mg_kg_h * gewicht
 
-                        wirkstoff_mg_perfusor = st.number_input(
-                            f"Wirkstoffmenge in Perfusor (mg / {spritzenvolumen} ml)", 1.0, 2000.0, 500.0, 10.0, key=f"{unique_key}_perfusor_mg"
-                        )
-                        konzentration_perfusor = wirkstoff_mg_perfusor / spritzenvolumen
+                        wirkstoff_mg_perfusor = 0
+                        konzentration_perfusor = 0
+                        if pd.notna(row["Default_Dosierung_mg_kg_h"]):
+                            wirkstoff_mg_perfusor = st.number_input(
+                                f"Wirkstoffmenge in Perfusor (mg / {spritzenvolumen} ml)", 1.0, 2000.0, 500.0, 10.0, key=f"{unique_key}_perfusor_mg"
+                            )
+                            konzentration_perfusor = wirkstoff_mg_perfusor / spritzenvolumen
 
+                        st.markdown("#### 🚨 Bolus-Gabe")
                         konzentration_bolus = st.number_input(
-                            "Konzentration der Bolus-Spritze (mg/ml)", 0.1, 100.0, konzentration_perfusor, 0.1, key=f"{unique_key}_konz_bolus"
+                            "Konzentration der Bolus-Spritze (mg/ml)", 0.1, 100.0, 1.0, 0.1, key=f"{unique_key}_konz_bolus"
                         )
+                        st.info("⚠️ Standardkonzentration für Bolus auf 1 mg/ml gesetzt. Bitte individuell anpassen.")
 
                         bolusdosis_mg = row["Dosis_Bolus_mg_pro_kg_Bolus"] * gewicht
                         bolus_volumen_ml = bolusdosis_mg / konzentration_bolus if konzentration_bolus > 0 else 0
 
-                        st.markdown("#### 🚨 Bolus-Gabe")
                         bolus_df = pd.DataFrame({
                             "Parameter": ["Bolusdosis (mg/kg)", "Bolusdosis gesamt (mg)", "Volumen für Bolusgabe (ml)", "Konzentration Bolus (mg/ml)"],
                             "Wert": [f"{row['Dosis_Bolus_mg_pro_kg_Bolus']:.2f}", f"{bolusdosis_mg:.2f}", f"{bolus_volumen_ml:.2f}", f"{konzentration_bolus:.2f}"]
                         })
                         st.table(bolus_df)
 
-                        if ziel_dosis_mg_h is not None:
-                            laufrate_ml_h = ziel_dosis_mg_h / konzentration_perfusor if konzentration_perfusor > 0 else 0
+                        if ziel_dosis_mg_h is not None and konzentration_perfusor > 0:
+                            laufrate_ml_h = ziel_dosis_mg_h / konzentration_perfusor
                             st.markdown("#### 💧 Perfusor-Einstellungen")
                             perfusor_df = pd.DataFrame({
                                 "Parameter": [
